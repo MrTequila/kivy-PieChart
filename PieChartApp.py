@@ -51,7 +51,7 @@ class PieChart(GridLayout):
         self.temp = []
 
         for key, value in data.items():
-            percentage = (value / sum(data.values()) * 100)
+            percentage = (value / float(sum(data.values())) * 100)
             color = [random(), random(), random(), 1]
             self.data[key] = [value, percentage, color]
 
