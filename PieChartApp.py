@@ -18,11 +18,21 @@ class MainWindow(GridLayout):
         super(MainWindow, self).__init__(**kwargs)
         self.cols = 1
         self.rows = 2
-        in_data = {"Opera": 350,
-                   "Steam": 234,
-                   "Overwatch": 532,
-                   "PyCharm": 485,
-                   "YouTube": 221}
+        
+        # in_data can take form of either formats below
+        
+        # in_data = {"Opera": 350,
+        #            "Steam": 234,
+        #            "Overwatch": 532,
+        #            "PyCharm": 485,
+        #            "YouTube": 221}
+
+        in_data = {"Opera": (350, [.1, .1, .4, 1]),
+                   "Steam": (234, [.1, .7, .3, 1]),
+                   "Overwatch": (532, [.9, .1, .1, 1]),
+                   "PyCharm": (485, [.8, .7, .1, 1]),
+                   "YouTube": (221, [.3, .4, .9, 1])}
+        
         position = (100, 100)
         size = (250, 250)
         button = Button(text="text", width=300)
@@ -51,9 +61,18 @@ class PieChart(GridLayout):
         self.temp = []
 
         for key, value in data.items():
-            percentage = (value / float(sum(data.values())) * 100)
-            color = [random(), random(), random(), 1]
-            self.data[key] = [value, percentage, color]
+            if type(value) is int:
+                percentage = (value / float(sum(data.values())) * 100)
+                color = [random(), random(), random(), 1]
+                self.data[key] = [value, percentage, color]
+
+            elif type(value) is tuple:
+                vals = []
+                for l in data.values():
+                    vals.append(l[0])
+                percentage = (value[0] / float(sum(vals)) * 100)
+                color = value[1]
+                self.data[key] = [value[0], percentage, color]
 
         self.pie = Pie(self.data, self.position, self.size_mine)
         self.add_widget(self.pie)
